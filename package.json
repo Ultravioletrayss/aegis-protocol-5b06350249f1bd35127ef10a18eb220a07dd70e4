@@ -1,0 +1,43 @@
+{
+  "name": "aegis-protocol",
+  "version": "0.1.0",
+  "description": "AI-Powered On-Chain Agent Batch Execution Network — MVP for blockchain course final project",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node",
+    "deploy:local": "npx hardhat run scripts/deploy.ts --network localhost",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.ts --network sepolia",
+    "approve:local": "npx hardhat run scripts/approve-amm.ts --network localhost",
+    "relayer": "cd relayer && npx ts-node src/index.ts",
+    "e2e": "cd relayer && npx ts-node src/e2e-test.ts",
+    "ai": "cd ai-generator && npx ts-node src/index.ts",
+    "ai:random": "cd ai-generator && npx ts-node src/index.ts --mode random",
+    "ai:llm": "cd ai-generator && npx ts-node src/index.ts --mode llm",
+    "ai:momentum": "cd ai-generator && npx ts-node src/index.ts --mode random --strategy momentum",
+    "ai:arbitrage": "cd ai-generator && npx ts-node src/index.ts --mode random --strategy arbitrage",
+    "dashboard": "cd dashboard && npm run dev",
+    "setup:local": "npm run deploy:local && npm run approve:local",
+    "fork": "npx hardhat node --network hardhat-fork",
+    "deploy:fork": "npx hardhat run scripts/deploy-fork.ts --network hardhat-fork",
+    "fork:relayer": "cd relayer && npx ts-node src/index.ts",
+    "start": "npm run node & sleep 3 && npm run deploy:local && npm run relayer & sleep 2 && npm run ai & npm run dashboard"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.2",
+    "@nomicfoundation/hardhat-ethers": "^3.1.3",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "chai": "^6.2.2",
+    "ethers": "^6.16.0",
+    "hardhat": "^2.19.5",
+    "ts-node": "^10.9.0",
+    "typechain": "^8.3.2",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "fp-ts": "^2.16.11"
+  }
+}

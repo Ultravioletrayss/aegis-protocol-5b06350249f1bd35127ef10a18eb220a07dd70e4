@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Aegis Protocol Base Styles ── */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+body {
+  background: #050505;
+  color: #f4f4f5;
+  font-feature-settings: "tnum", "zero";
+}
+
+/* ── Ambient Background Mesh Gradients ── */
+.ambient-mesh {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient-mesh::before,
+.ambient-mesh::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.06;
+  pointer-events: none;
+  animation: ambient-drift 30s linear infinite;
+}
+.ambient-mesh::before {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(52,211,153,0.5), transparent 70%);
+  top: -200px; left: -100px;
+}
+.ambient-mesh::after {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%);
+  bottom: -150px; right: -100px;
+  animation-delay: -15s;
+}
+@keyframes ambient-drift {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate(40px, -30px) rotate(120deg) scale(1.1); }
+  66% { transform: translate(-20px, 20px) rotate(240deg) scale(0.95); }
+  100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+}
+
+/* ── Liquid Glass Utilities ── */
+@layer components {
+  .glass-card {
+    @apply relative overflow-hidden rounded-lg border border-white/[0.07] bg-white/[0.03] backdrop-blur-2xl transition-all duration-700;
+  }
+  
+  .glass-card:hover {
+    @apply border-white/[0.15] bg-white/[0.05];
+  }
+
+  .glass-shimmer::before {
+    content: '';
+    @apply absolute -inset-px bg-gradient-to-r from-transparent via-white/[0.03] to-transparent opacity-0 transition-opacity duration-500 pointer-events-none;
+  }
+  
+  .glass-shimmer:hover::before {
+    @apply opacity-100;
+  }
+
+  .terminal-line {
+    @apply font-mono text-sm leading-tight;
+  }
+}
+
+/* ── Animations ── */
+@keyframes border-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.batch-executing {
+  animation: border-shimmer 2s linear infinite;
+  background-size: 200% 200%;
+  background-image: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0) 0%,
+    rgba(52, 211, 153, 0.3) 50%,
+    rgba(52, 211, 153, 0) 100%
+  );
+}
+
+/* ── Number ticker ── */
+.ticker-enter-active {
+  transition: all 0.3s ease-out;
+}
+.ticker-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
