@@ -98,21 +98,6 @@ contract AgentExecutor {
 
         uint256 gasAfter = gasleft();
         uint256 totalGasUsed = gasBefore - gasAfter;
-
-        // === 🎲 方案 A：添加随机噪声（演示用 · 让 Gas 数据有波动） ===
-        // 基于 block 属性 + batchId 生成伪随机数，产生 ±15% 波动
-        // 生产环境请删除此段，使用真实 gas 测量
-        uint256 randomness = uint256(keccak256(abi.encodePacked(
-            block.timestamp, 
-            block.prevrandao, 
-            batchId,
-            msg.sender
-        )));
-        int256 variance = int256(randomness % 30) - 15; // -15 到 +15
-        int256 adjustedGas = int256(totalGasUsed) + (int256(totalGasUsed) * variance) / 100;
-        totalGasUsed = uint256(adjustedGas > 0 ? adjustedGas : int256(totalGasUsed));
-        // ===========================================================
-
         uint256 gasSaved = estimatedIndividualGas > totalGasUsed
             ? estimatedIndividualGas - totalGasUsed
             : 0;
